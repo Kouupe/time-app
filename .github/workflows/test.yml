@@ -1,4 +1,4 @@
-name: Test /time endpoint
+name: Test Application
 on:
   push:
     branches: ['*']
@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -26,6 +26,10 @@ jobs:
           python src/app.py &
           sleep 3
       
-      - name: Run test
+      - name: Test /time endpoint
         run: |
           python test/test_time.py
+      
+      - name: Test /metrics endpoint
+        run: |
+          python test/test_metrics_integration.py
