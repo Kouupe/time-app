@@ -1,0 +1,31 @@
+name: Test /time endpoint
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          pip install flask requests
+      
+      - name: Run app in background
+        run: |
+          python src/app.py &
+          sleep 3
+      
+      - name: Run test
+        run: |
+          python test/test_time.py
