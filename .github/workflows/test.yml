@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -24,12 +24,16 @@ jobs:
       - name: Run app in background
         run: |
           python src/app.py &
-          sleep 3
+          sleep 5
       
       - name: Test /time endpoint
         run: |
           python test/test_time.py
       
-      - name: Test /metrics endpoint
+      - name: Test /metrics (basic)
+        run: |
+          python test/test_metrics.py
+      
+      - name: Test /metrics integration
         run: |
           python test/test_metrics_integration.py

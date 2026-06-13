@@ -1,19 +1,20 @@
 import requests
 
-def test_metrics_works():
+def test_metrics_integration():
     # Делаем 3 запроса к /time
     for i in range(3):
-        r = requests.get('http://localhost:5000/time')
-        assert r.status_code == 200
+        resp = requests.get('http://localhost:5000/time')
+        assert resp.status_code == 200
     
     # Проверяем /metrics
-    r = requests.get('http://localhost:5000/metrics')
-    data = r.json()
+    resp = requests.get('http://localhost:5000/metrics')
+    data = resp.json()
     
-    assert 'count' in data, "No 'count' field in response"
-    # Изменяем проверку: count ДОЛЖЕН БЫТЬ НЕ МЕНЬШЕ 3 (а не точно равен 3)
-    assert data['count'] >= 3, f"Expected at least 3, got {data['count']}"
-    print(f"Metrics test PASSED: count = {data['count']}")
+    # Проверяем, что поле count существует и оно не меньше 3
+    assert 'count' in data, "Response must have 'count' field"
+    assert data['count'] >= 3, f"Count should be at least 3, got {data['count']}"
+    
+    print(f"Test PASSED! Count = {data['count']}")
 
 if __name__ == '__main__':
-    test_metrics_works()
+    test_metrics_integration()
